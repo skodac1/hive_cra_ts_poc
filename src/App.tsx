@@ -4,33 +4,35 @@ import { Security, LoginCallback } from '@okta/okta-react'
 import { toRelativeUrl } from '@okta/okta-auth-js';
 // @ts-ignore
 import { ThemeProvider } from 'styled-components'
-import Layout from './components/Layout'
 import Home from './pages/Home'
 import Remittance from "./pages/Remittance";
 import Settings from "./pages/Settings";
 import Orders from "./pages/Orders";
 import theme from "./theme";
 import {initializeAuth} from "./utils/auth";
+import SecureRoute from "./components/okta/SecureRoute";
+import Login from "./pages/Login";
+import Loader from "./components/Loader";
 
 const App = () => {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const restoreOriginalUri = async (_oktaAuth: any, originalUri: any) => {
         navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
     };
     const auth = initializeAuth()
   return (
       <ThemeProvider theme={theme}>
-          <Layout>
-              <Security oktaAuth={auth} restoreOriginalUri={restoreOriginalUri}>
-                  <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/orders" element={<Orders />} />
-                      <Route path="/remittance" element={<Remittance />} />
-                      <Route path="/settings" element={<Settings />} />
-                      <Route path='/login/callback' element={LoginCallback} />
-                  </Routes>
-              </Security>
-          </Layout>
+          <Security oktaAuth={auth} restoreOriginalUri={restoreOriginalUri}>
+              <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/" element={<SecureRoute><Home /></SecureRoute>} />
+                  <Route path="/orders" element={<SecureRoute><Orders /></SecureRoute>} />
+                  <Route path="/remittance" element={<SecureRoute><Remittance /></SecureRoute>} />
+                  <Route path="/settings" element={<SecureRoute><Settings /></SecureRoute>} />
+                  <Route path='/login/callback' element={<LoginCallback loadingElement={<Loader />}/>} />
+              </Routes>
+
+          </Security>
       </ThemeProvider>
 
 

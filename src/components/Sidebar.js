@@ -5,7 +5,8 @@ import { NavLink, useMatch } from 'react-router-dom'
 import { Flex, Box } from 'rebass/styled-components'
 import LogoutIcon from './icons/Logout'
 import SettingsIcon from './icons/Settings'
-// import { AuthContext } from './okta/AuthProvider'
+import {useOktaAuth} from "@okta/okta-react";
+
 
 const StyledSidebarItem = styled(Flex)`
   line-height: 145%;
@@ -65,13 +66,11 @@ SidebarItem.defaultProps = {
 }
 
 const Sidebar = () => {
-    // const { auth } = useContext(AuthContext)
-
-    // const logout = async () => {
-    //     // const originalUri = router.asPath
-    //     auth.setOriginalUri('/orders')
-    //     await auth.signOut()
-    // }
+    const { oktaAuth } = useOktaAuth()
+    const logout = async () => {
+        oktaAuth.setOriginalUri('/orders')
+        await oktaAuth.signOut()
+    }
 
     return (
         <Flex
@@ -103,7 +102,7 @@ const Sidebar = () => {
                 <SettingsIcon />
                 Settings
             </SidebarItem>
-            <SidebarItem href="#" onClick={() => {}}>
+            <SidebarItem href="#" onClick={logout}>
                 <LogoutIcon />
                 Log Out
             </SidebarItem>
