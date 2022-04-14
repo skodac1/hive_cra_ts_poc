@@ -12,11 +12,11 @@ const Login = () => {
 
     const recoveryToken = searchParams.get('recoveryToken')
 
-    const onSuccess = (tokens) => {
+    const onSuccess = (tokens: any) => {
         oktaAuth.handleLoginRedirect(tokens)
     }
 
-    const onError = (err) => {
+    const onError = (err: any) => {
         // eslint-disable-next-line no-console
         console.log('error logging in', err)
     }

@@ -1,10 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react"
 import { Flex } from 'rebass/styled-components'
 
 import Sidebar from './Sidebar'
 
-const Layout = ({ children }) => {
+type LayoutProps = {
+    children: any
+}
+
+const Layout = ({children}: LayoutProps) => {
     return (
         <Flex
             overflow="hidden"
@@ -19,10 +22,6 @@ const Layout = ({ children }) => {
             <Flex flexDirection="column" flex={1}>{children}</Flex>
         </Flex>
     )
-}
-
-Layout.propTypes = {
-    children: PropTypes.node.isRequired,
 }
 
 export default Layout

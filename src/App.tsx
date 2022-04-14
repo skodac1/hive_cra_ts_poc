@@ -16,7 +16,7 @@ import Loader from "./components/Loader";
 
 const App = () => {
     const navigate = useNavigate();
-    const restoreOriginalUri = async (_oktaAuth: any, originalUri: any) => {
+    const restoreOriginalUri = async (_oktaAuth: any, originalUri: string) => {
         navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
     };
     const auth = initializeAuth()

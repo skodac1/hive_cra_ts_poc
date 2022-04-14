@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react'
+// @ts-ignore
 import OktaSignIn from '@okta/okta-signin-widget'
 import '@okta/okta-signin-widget/dist/css/okta-sign-in.min.css'
-import PropTypes from 'prop-types'
 
 import { Flex } from 'rebass/styled-components'
 import {configureWidget} from "../../utils/auth"
-
 
 const style = {
   height: 'calc(100% - 154px)',
@@ -68,15 +67,14 @@ const style = {
   },
 }
 
-const OktaSignInWidget = ({ onSuccess, onError, recoveryToken }) => {
+const OktaSignInWidget = ({ onSuccess, onError, recoveryToken }: OktaSignInWidgetProps) => {
   const widgetRef = useRef()
+  // @ts-ignore
   useEffect(() => {
     if (!widgetRef.current) { return false }
 
     const config = configureWidget()
     if (recoveryToken) config.recoveryToken = recoveryToken
-    console.log(config.recoveryToken)
-
     const widget = new OktaSignIn(config)
 
     widget.showSignInAndRedirect({
@@ -91,10 +89,10 @@ const OktaSignInWidget = ({ onSuccess, onError, recoveryToken }) => {
   )
 }
 
-OktaSignInWidget.propTypes = {
-  onSuccess: PropTypes.func,
-  onError: PropTypes.func,
-  recoveryToken: PropTypes.string,
+type OktaSignInWidgetProps = {
+  onSuccess?: (tokens: any) => void,
+  onError?: (error: any) => void,
+  recoveryToken?: string | null
 }
 
 OktaSignInWidget.defaultProps = {

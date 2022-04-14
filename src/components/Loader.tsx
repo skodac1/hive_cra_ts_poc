@@ -1,9 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Box } from 'rebass/styled-components'
 import ClipLoader from 'react-spinners/ClipLoader'
 
-const Loader = ({ size }) => {
+const Loader = ({ size }: LoaderProps) => {
   return (
     <Box
       sx={{
@@ -21,12 +20,10 @@ const Loader = ({ size }) => {
   )
 }
 
-Loader.propTypes = {
-  size: PropTypes.number,
+Loader.defaultProps = {
+    size: 30,
 }
 
-Loader.defaultProps = {
-  size: 30,
-}
+type LoaderProps = { size?: number };
 
 export default Loader

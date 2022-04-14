@@ -1,5 +1,4 @@
-import React  from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import styled, { css } from 'styled-components'
 import { NavLink, useMatch } from 'react-router-dom'
 import { Flex, Box } from 'rebass/styled-components'
@@ -7,37 +6,53 @@ import LogoutIcon from './icons/Logout'
 import SettingsIcon from './icons/Settings'
 import {useOktaAuth} from "@okta/okta-react";
 
+// const StyledSidebarItem = styled(Flex)`
+//   line-height: 145%;
+//   border-radius: 4px;
+//   z-index: 1;
+//   cursor: pointer;
+//
+//   &:hover {
+//     background-color: ${ ({ active, theme }) => (active ? theme.colors?.primary : theme.colors?.gray_light) };
+//   }
+//   svg {
+//     margin-right: 16px;
+//     ${ ({ active, theme }) => (active &&
+//     css`
+//       path {
+//         fill: ${ theme.colors?.white }
+//       };
+//     `) }
+//     };
+//   }
+// `
 
-const StyledSidebarItem = styled(Flex)`
-  line-height: 145%;
-  border-radius: 4px;
-  z-index: 1;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${ ({ active, theme }) => (active ? theme.colors?.primary : theme.colors?.gray_light) };
-  }
-  svg {
-    margin-right: 16px;
-    ${ ({ active, theme }) => (active &&
-    css`
-      path {
-        fill: ${ theme.colors?.white }
-      };
-    `) }
-    };
-  }
-`
-
-const SidebarItem = ({ href, children, onClick }) => {
-    // const router = useRouter()
-    // const isActive = router?.pathname.includes(href)
+const SidebarItem = ({ href, children, onClick }: SidebarItemProps) => {
     let isActive = useMatch(href)
+    const style = {
+        lineHeight: '145%',
+    borderRadius: '4px',
+    zIndex: 1,
+    cursor: 'pointer',
+        '.active': {
+            '&:hover': {
+                backgroundColor: 'primary'
+            },
+            '.inactive': {
+                backgroundColor: 'gray_light'
+            }
+        },
+        ...(isActive && {
+            '& path': {
+                fill: 'white'
+            }
+        })
+    }
 
     return (
-        <NavLink to={href} style={{ textDecoration: 'none' }}>
-            <StyledSidebarItem
-                active={isActive}
+        <NavLink to={href} style={{ textDecoration: 'none' }} className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
+            <Flex
+                style={style}
                 alignItems="center"
                 py={2}
                 px={4}
@@ -46,19 +61,18 @@ const SidebarItem = ({ href, children, onClick }) => {
                 color={isActive ? 'white' : 'gray_darkest'}
                 fontSize={2}
                 fontFamily="heading"
-                cursor="pointer"
                 onClick={onClick}
             >
                 {children}
-            </StyledSidebarItem>
+            </Flex>
         </NavLink>
     )
 }
 
-SidebarItem.propTypes = {
-    href: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    onClick: PropTypes.func,
+type SidebarItemProps = {
+    href: string,
+    children: any,
+    onClick?: () => void,
 }
 
 SidebarItem.defaultProps = {

@@ -1,8 +1,12 @@
 import React from 'react'
 import { Text } from 'rebass/styled-components'
-import PropTypes from 'prop-types'
 
-const Link = ({ text, url }) => {
+type LinkProps = {
+    text: string,
+    url: string
+}
+
+const Link = ({ text, url }: LinkProps) => {
   return (<Text
     as="a"
     href={url}
@@ -19,8 +23,4 @@ const Link = ({ text, url }) => {
   </Text>)
 }
 
-Link.propTypes = {
-  text: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
-}
 export default Link

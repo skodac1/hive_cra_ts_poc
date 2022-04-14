@@ -1,5 +1,5 @@
-export const getFEUrl = (env) => `https://hive-participation-fe-${ env }.happymoney.com`
-export const getBEUrl = (env) => `https://mesh-gateway.${ env }.aws-ue1.happymoney.com/hive/participation`
+export const getFEUrl = (env: string) => `https://hive-participation-fe-${ env }.happymoney.com`
+export const getBEUrl = (env: string) => `https://mesh-gateway.${ env }.aws-ue1.happymoney.com/hive/participation`
 
 export const getEnv = () => {
   if (typeof window !== 'undefined') {
@@ -28,7 +28,7 @@ export const getLoginUri = () => {
   return `${ baseUrl }/login`
 }
 
-const appendHtml = (uri) => {
+const appendHtml = (uri: string) => {
   if (getEnv() !== 'local') uri = `${ uri }.html`
   return uri
 }

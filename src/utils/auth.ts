@@ -2,13 +2,13 @@ import { OktaAuth } from '@okta/okta-auth-js'
 import { getAuthIssuer, getAuthPostLogoutRedirectUri, getAuthRedirectUri, getEnv } from './baseUrl'
 
 const storageProvider = {
-  getItem(key) {
+  getItem(key: string) {
     return (typeof window !== 'undefined') ? window.localStorage.getItem(key) : ''
   },
-  setItem(key, val) {
+  setItem(key: string, val: string) {
     if (typeof window !== 'undefined') window.localStorage.setItem(key, val)
   },
-  removeItem(key) {
+  removeItem(key: string) {
     if (typeof window !== 'undefined') window.localStorage.removeItem(key)
   },
 }
@@ -55,4 +55,5 @@ export const configureWidget = () => ({
       'primaryauth.title': "Let's get you logged in",
     },
   },
+  recoveryToken: ''
 })
