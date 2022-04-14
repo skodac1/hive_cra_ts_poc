@@ -1,81 +1,27 @@
-import React from 'react'
-import styled, { css } from 'styled-components'
-import { NavLink, useMatch } from 'react-router-dom'
+import React, {useMemo} from 'react'
+import { NavLink } from 'react-router-dom'
 import { Flex, Box } from 'rebass/styled-components'
 import LogoutIcon from './icons/Logout'
 import SettingsIcon from './icons/Settings'
 import {useOktaAuth} from "@okta/okta-react";
+import NavLinkChildWrapper from "./NavLinkChildWrapper";
 
-// const StyledSidebarItem = styled(Flex)`
-//   line-height: 145%;
-//   border-radius: 4px;
-//   z-index: 1;
-//   cursor: pointer;
-//
-//   &:hover {
-//     background-color: ${ ({ active, theme }) => (active ? theme.colors?.primary : theme.colors?.gray_light) };
-//   }
-//   svg {
-//     margin-right: 16px;
-//     ${ ({ active, theme }) => (active &&
-//     css`
-//       path {
-//         fill: ${ theme.colors?.white }
-//       };
-//     `) }
-//     };
-//   }
-// `
-
-const SidebarItem = ({ href, children, onClick }: SidebarItemProps) => {
-    let isActive = useMatch(href)
-    const style = {
-        lineHeight: '145%',
-    borderRadius: '4px',
-    zIndex: 1,
-    cursor: 'pointer',
-        '.active': {
-            '&:hover': {
-                backgroundColor: 'primary'
-            },
-            '.inactive': {
-                backgroundColor: 'gray_light'
-            }
-        },
-        ...(isActive && {
-            '& path': {
-                fill: 'white'
-            }
-        })
-    }
-
+const SidebarNavItem = ({ to, children }: SidebarItemProps) => {
     return (
-        <NavLink to={href} style={{ textDecoration: 'none' }} className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
-            <Flex
-                style={style}
-                alignItems="center"
-                py={2}
-                px={4}
-                mb={3}
-                bg={isActive ? 'primary' : 'transparent'}
-                color={isActive ? 'white' : 'gray_darkest'}
-                fontSize={2}
-                fontFamily="heading"
-                onClick={onClick}
-            >
+        <NavLink to={to} style={{ textDecoration: 'none' }} className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
+            <NavLinkChildWrapper>
                 {children}
-            </Flex>
+            </NavLinkChildWrapper>
         </NavLink>
     )
 }
 
 type SidebarItemProps = {
-    href: string,
-    children: any,
-    onClick?: () => void,
+    to: string,
+    children: any
 }
 
-SidebarItem.defaultProps = {
+SidebarNavItem.defaultProps = {
     onClick: () => null,
 }
 
@@ -86,6 +32,35 @@ const Sidebar = () => {
         await oktaAuth.signOut()
     }
 
+    const style = useMemo(() => ({
+        borderRight: '1px solid',
+        borderRightColor: 'gray',
+        position: 'relative',
+        backgroundImage: 'url(/sidebar-background1.png), url(/sidebar-background2.png)',
+        backgroundPosition: 'top, bottom',
+        backgroundRepeat: 'no-repeat, no-repeat',
+        '& .nav-link-child-wrapper': {
+            bg: 'transparent',
+            color: 'gray_darkest',
+            '&:hover': {
+                bg: 'gray_light'
+            },
+        },
+        '& svg': { mr: 3},
+        '& .active': {
+            '& .nav-link-child-wrapper': {
+                bg: 'primary',
+                color: 'white',
+                '&:hover': {
+                    bg: 'primary'
+                },
+            },
+            '& path': {
+                fill: 'white'
+            }
+        },
+    }), [])
+
     return (
         <Flex
             flexDirection="column"
@@ -93,33 +68,28 @@ const Sidebar = () => {
             width={244}
             py={4}
             px={3}
-            sx={{
-                borderRight: '1px solid',
-                borderRightColor: 'gray',
-                position: 'relative',
-                backgroundImage: 'url(/sidebar-background1.png), url(/sidebar-background2.png)',
-                backgroundPosition: 'top, bottom',
-                backgroundRepeat: 'no-repeat, no-repeat',
-            }}
+            sx={style}
         >
             <Box as="img" src="/happy_hive_logo.svg" width={180} height={34} alt="logo" />
             <Flex flexDirection="column" mt={40} flex={1}>
-                <SidebarItem href="/orders">
+                <SidebarNavItem to="/orders">
                     Orders
-                </SidebarItem>
-                <SidebarItem href="/remittance">
+                </SidebarNavItem>
+                <SidebarNavItem to="/remittance">
                     Remittance
-                </SidebarItem>
+                </SidebarNavItem>
             </Flex>
             <Box as="hr" bg="gray" my={3} height={1} sx={{ border: 'none' }} />
-            <SidebarItem href="/settings">
+            <SidebarNavItem to="/settings">
                 <SettingsIcon />
                 Settings
-            </SidebarItem>
-            <SidebarItem href="#" onClick={logout}>
-                <LogoutIcon />
-                Log Out
-            </SidebarItem>
+            </SidebarNavItem>
+            <Box className="inactive" onClick={logout}>
+                <NavLinkChildWrapper>
+                    <LogoutIcon />
+                    Log Out
+                </NavLinkChildWrapper>
+            </Box>
         </Flex>
     )
 }
