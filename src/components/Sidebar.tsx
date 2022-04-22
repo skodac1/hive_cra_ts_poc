@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { Flex, Box } from 'rebass/styled-components'
 import LogoutIcon from './icons/Logout'
 import SettingsIcon from './icons/Settings'
-import {useOktaAuth} from "@okta/okta-react";
+import { useOktaAuth } from "@okta/okta-react";
 import NavLinkChildWrapper from "./NavLinkChildWrapper";
 
 const SidebarNavItem = ({ to, children }: SidebarItemProps) => {
