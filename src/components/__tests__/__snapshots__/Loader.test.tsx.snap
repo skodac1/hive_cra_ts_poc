@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Loader /> matches snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="sc-bczRLJ WjSqt"
+    >
+      <span
+        class="css-1yzshy8"
+      />
+    </div>
+  </div>
+</body>
+`;
